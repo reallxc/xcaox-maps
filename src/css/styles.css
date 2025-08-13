@@ -59,3 +59,13 @@ html, body, #map {
   line-height: 35px !important;
   font-size: 18px !important;
 }
+
+/* Style the layer switch button */
+.leaflet-bar .leaflet-control a {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.leaflet-bar .leaflet-control a:hover {
+  background-color: #f0f0f0;
+}

@@ -4,12 +4,14 @@
 class TileLayerManager {
   constructor(map) {
     this.map = map;
+    this.currentLayer = null;
+    this.manifest = null;
   }
 
   async initializeTileLayer() {
     try {
-      const manifest = await fetch('assets/tiles/manifest.json').then(r => r.json());
-      this.setupTileLayerWithManifest(manifest);
+      this.manifest = await fetch('assets/tiles/manifest.json').then(r => r.json());
+      this.setupTileLayerWithManifest(this.manifest);
     } catch (error) {
       console.warn('Failed to load manifest.json, using fallback configuration');
       this.setupFallbackTileLayer();
@@ -43,6 +45,7 @@ class TileLayerManager {
       attribution: 'NZ Topos by XCAOX',
     });
 
+    this.currentLayer = layer;
     layer.addTo(this.map);
   }
 
@@ -53,14 +56,26 @@ class TileLayerManager {
     
     this.map.setMaxZoom(displayMaxZoom);
     
-    L.tileLayer('assets/tiles/{z}/{x}/{y}.png', {
+    const layer = L.tileLayer('assets/tiles/{z}/{x}/{y}.png', {
       tileSize: 256,
       tms: false,
       maxNativeZoom: maxNativeZoom,  // This is the key - tells Leaflet to scale z=13 tiles
       maxZoom: displayMaxZoom,
       detectRetina: false,  // Disable retina to prevent fetching @2x tiles
       attribution: 'NZ Topos by XCAOX'
-    }).addTo(this.map);
+    });
+    
+    this.currentLayer = layer;
+    layer.addTo(this.map);
+  }
+
+  restoreBounds() {
+    if (this.manifest && this.manifest.bounds) {
+      this.map.fitBounds(L.latLngBounds(this.manifest.bounds[0], this.manifest.bounds[1]));
+    } else {
+      // Fallback to reasonable New Zealand bounds
+      this.map.setView([-41.5, 174.0], 8);
+    }
   }
 
   get CustomTileLayer() {

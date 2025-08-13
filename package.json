@@ -1,15 +1,24 @@
 {
-  "name": "leaflet-poi-system",
+  "name": "xcaox-maps",
   "version": "1.0.0",
-  "description": "A Points of Interest (POI) system for a Leaflet map that fetches and displays POIs, paths, and areas.",
-  "main": "src/js/app.js",
+  "description": "XCAOX Maps - Interactive mapping system with POI management and local tile support",
+  "main": "server.js",
   "scripts": {
-    "start": "live-server .",
-    "build": "echo 'Build step not defined'",
+    "start": "node server.js",
+    "dev": "live-server --port=8080",
+    "pm2:start": "pm2 start ecosystem.config.js --env production",
+    "pm2:dev": "pm2 start ecosystem.config.js --env development", 
+    "pm2:stop": "pm2 stop xcaox-maps",
+    "pm2:restart": "pm2 restart xcaox-maps",
+    "pm2:delete": "pm2 delete xcaox-maps",
+    "pm2:logs": "pm2 logs xcaox-maps",
+    "pm2:monit": "pm2 monit",
+    "build": "echo 'Static build - no build step needed'",
     "test": "echo 'No tests defined'"
   },
   "dependencies": {
-    "leaflet": "^1.9.4"
+    "leaflet": "^1.9.4",
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "live-server": "^1.2.1"
@@ -18,8 +27,16 @@
     "leaflet",
     "poi",
     "map",
-    "geolocation"
+    "geolocation",
+    "xcaox",
+    "mapping",
+    "tiles",
+    "gis"
   ],
-  "author": "Your Name",
-  "license": "MIT"
+  "author": "XCAOX",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
 }
