@@ -1,0 +1,61 @@
+html, body, #map {
+  height: 100%;
+  margin: 0;
+}
+
+.marker {
+  width: 30px;
+  height: 30px;
+}
+
+.poi-marker {
+  background-image: url('../assets/icons/poi-marker.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.path-marker {
+  background-image: url('../assets/icons/path-marker.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.area-marker {
+  background-image: url('../assets/icons/area-marker.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.popup {
+  max-width: 200px;
+}
+
+.geo-notice {
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font: 14px/1.2 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.geo-notice button {
+  margin-left: 8px;
+  background: #444;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+/* Customize zoom buttons to match location button size (35px x 35px) */
+.leaflet-control-zoom a {
+  width: 35px !important;
+  height: 35px !important;
+  line-height: 35px !important;
+  font-size: 18px !important;
+}

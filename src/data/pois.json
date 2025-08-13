@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Mount Cook",
+    "description": "The highest mountain in New Zealand.",
+    "latitude": -43.735,
+    "longitude": 170.096,
+    "icon": "assets/icons/poi-marker.svg"
+  },
+  {
+    "id": 2,
+    "name": "Milford Sound",
+    "description": "A famous fiord in the southwest of New Zealand's South Island.",
+    "latitude": -44.666,
+    "longitude": 167.925,
+    "icon": "assets/icons/poi-marker.svg"
+  },
+  {
+    "id": 3,
+    "name": "Tongariro National Park",
+    "description": "A dual World Heritage area in New Zealand.",
+    "latitude": -39.137,
+    "longitude": 175.064,
+    "icon": "assets/icons/poi-marker.svg"
+  },
+  {
+    "id": 4,
+    "name": "Bay of Islands",
+    "description": "A popular holiday destination in the Northland region.",
+    "latitude": -35.283,
+    "longitude": 174.086,
+    "icon": "assets/icons/poi-marker.svg"
+  },
+  {
+    "id": 5,
+    "name": "Franz Josef Glacier",
+    "description": "A stunning glacier located in Westland Tai Poutini National Park.",
+    "latitude": -43.363,
+    "longitude": 170.099,
+    "icon": "assets/icons/poi-marker.svg"
+  }
+]
