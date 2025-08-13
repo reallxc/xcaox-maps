@@ -10,6 +10,37 @@
 <body>
 <body>
   <div id="map"></div>
+  <div id="debug" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; max-width: 300px; font-size: 12px; z-index: 1000; display: none;">
+    <div id="debug-content"></div>
+  </div>
+  
+  <script>
+    // Error logging to page
+    window.onerror = function(msg, url, line, col, error) {
+      const debugDiv = document.getElementById('debug');
+      const debugContent = document.getElementById('debug-content');
+      debugDiv.style.display = 'block';
+      debugContent.innerHTML += '<div style="color: red;">ERROR: ' + msg + ' at line ' + line + '</div>';
+      console.error('Global error:', msg, url, line, col, error);
+      return false;
+    };
+    
+    // Override console.log to also show on page
+    const originalLog = console.log;
+    console.log = function(...args) {
+      originalLog.apply(console, args);
+      const debugDiv = document.getElementById('debug');
+      const debugContent = document.getElementById('debug-content');
+      debugDiv.style.display = 'block';
+      debugContent.innerHTML += '<div>' + args.join(' ') + '</div>';
+      // Keep only last 10 messages
+      const messages = debugContent.querySelectorAll('div');
+      if (messages.length > 10) {
+        messages[0].remove();
+      }
+    };
+  </script>
+  
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="src/js/data-service.js"></script>
   <script src="src/js/poi-manager.js"></script>

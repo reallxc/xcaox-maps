@@ -21,7 +21,9 @@ class TileLayerManager {
                   manifest.availableZooms : null;
     const minNativeZoom = avail ? Math.min(...avail) : 0;
     const maxNativeZoom = avail ? Math.max(...avail) : 13; // your highest tile zoom
-    const displayMaxZoom = Math.max(15, maxNativeZoom);     // allow overzoom to 15
+    
+    // Allow zooming beyond native zoom level but limit excessive zooming
+    const displayMaxZoom = Math.min(maxNativeZoom + 3, 18); // Allow max 3 levels of overzooming
 
     this.map.setMinZoom(minNativeZoom);
     this.map.setMaxZoom(displayMaxZoom);
@@ -34,9 +36,9 @@ class TileLayerManager {
     const layer = new this.CustomTileLayer('assets/tiles/{z}/{x}/{y}.png', {
       minZoom: this.map.getMinZoom(),
       maxZoom: displayMaxZoom,
-      maxNativeZoom: maxNativeZoom,   // scale z=13 tiles for higher zooms
+      maxNativeZoom: maxNativeZoom,   // This tells Leaflet to scale z=13 tiles for higher zooms
       tileSize: 256,
-      detectRetina: true,
+      detectRetina: false,  // Disable retina to prevent fetching @2x tiles that don't exist
       tms: false,
       attribution: 'NZ Topos by XCAOX',
     });
@@ -45,13 +47,19 @@ class TileLayerManager {
   }
 
   setupFallbackTileLayer() {
-    // Fallback: still try single tree with overzoom
-    this.map.setMaxZoom(15);
+    // Fallback: Configure proper overzooming behavior
+    const maxNativeZoom = 13;
+    const displayMaxZoom = Math.min(maxNativeZoom + 3, 18); // Allow max 3 levels of overzooming
+    
+    this.map.setMaxZoom(displayMaxZoom);
+    
     L.tileLayer('assets/tiles/{z}/{x}/{y}.png', {
       tileSize: 256,
       tms: false,
-      maxNativeZoom: 13,
-      maxZoom: 15
+      maxNativeZoom: maxNativeZoom,  // This is the key - tells Leaflet to scale z=13 tiles
+      maxZoom: displayMaxZoom,
+      detectRetina: false,  // Disable retina to prevent fetching @2x tiles
+      attribution: 'NZ Topos by XCAOX'
     }).addTo(this.map);
   }
 
@@ -87,3 +95,6 @@ class TileLayerManager {
     });
   }
 }
+
+// Make TileLayerManager globally available
+window.TileLayerManager = TileLayerManager;

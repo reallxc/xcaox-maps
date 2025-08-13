@@ -1,6 +1,7 @@
-const L = require('leaflet');
+// Remove the require statement since Leaflet is loaded globally
+// const L = require('leaflet');
 
-export function addMarker(map, { latitude, longitude, iconUrl, popupContent }) {
+function addMarker(map, { latitude, longitude, iconUrl, popupContent }) {
     const marker = L.marker([latitude, longitude], {
         icon: L.icon({
             iconUrl: iconUrl,
@@ -18,7 +19,7 @@ export function addMarker(map, { latitude, longitude, iconUrl, popupContent }) {
     return marker;
 }
 
-export function drawPath(map, coordinates, options = {}) {
+function drawPath(map, coordinates, options = {}) {
     const path = L.polyline(coordinates, {
         color: options.color || 'blue',
         weight: options.weight || 5,
@@ -28,7 +29,7 @@ export function drawPath(map, coordinates, options = {}) {
     return path;
 }
 
-export function highlightArea(map, coordinates, options = {}) {
+function highlightArea(map, coordinates, options = {}) {
     const area = L.polygon(coordinates, {
         color: options.color || 'red',
         fillColor: options.fillColor || 'red',
@@ -37,3 +38,10 @@ export function highlightArea(map, coordinates, options = {}) {
 
     return area;
 }
+
+// Make functions globally available
+window.MapUtils = {
+    addMarker,
+    drawPath,
+    highlightArea
+};

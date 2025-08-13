@@ -1,5 +1,5 @@
 class DataService {
-  constructor(basePath) {
+  constructor(basePath = 'src') {
     this.basePath = basePath;
   }
 
@@ -43,4 +43,5 @@ class DataService {
   }
 }
 
-export default DataService;
+// Remove ES6 export and make it globally available
+window.DataService = DataService;

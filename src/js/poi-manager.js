@@ -5,14 +5,17 @@ class POIManager {
         this.pois = [];
     }
 
-    async loadPOIs(dataService) {
-        this.pois = await dataService.fetchPOIs();
+    loadPOIs(poisData) {
+        console.log('POIManager: Loading POIs data:', poisData);
+        this.pois = poisData;
         this.displayPOIs();
     }
 
     displayPOIs() {
+        console.log('POIManager: Displaying POIs, count:', this.pois.length);
         this.poiLayer.clearLayers();
         this.pois.forEach(poi => {
+            console.log('Creating marker for POI:', poi.name, 'at', poi.latitude, poi.longitude);
             const marker = L.marker([poi.latitude, poi.longitude], {
                 icon: L.icon({
                     iconUrl: 'assets/icons/poi-marker.svg',
@@ -23,6 +26,7 @@ class POIManager {
 
             marker.bindPopup(`<b>${poi.name}</b><br>${poi.description}`);
         });
+        console.log('POIManager: All markers created');
     }
 
     addPOI(poi) {
@@ -36,4 +40,5 @@ class POIManager {
     }
 }
 
-export default POIManager;
+// Remove ES6 export and make it globally available
+window.POIManager = POIManager;

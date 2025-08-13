@@ -113,3 +113,6 @@ class LocationControl {
     locationControl.showGeoNotice();
   }
 })();
+
+// Make LocationControl globally available
+window.LocationControl = LocationControl;
