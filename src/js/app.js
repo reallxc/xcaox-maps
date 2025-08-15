@@ -54,7 +54,7 @@ class MapApp {
   addLayerSwitchControl() {
     // Create custom layer switch control
     const LayerSwitchControl = L.Control.extend({
-      options: { position: 'topleft' },
+      options: { position: 'bottomleft' },
       onAdd: (map) => {
         const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         const button = L.DomUtil.create('a', '', container);
@@ -66,7 +66,7 @@ class MapApp {
         button.style.height = '40px';
         button.style.lineHeight = '40px';
         button.style.textAlign = 'center';
-        button.style.fontSize = '16px';
+        button.style.fontSize = '18px';
         button.style.backgroundColor = '#fff';
         button.textContent = '🗺️';
 
@@ -109,7 +109,7 @@ class MapApp {
       button.title = 'Switch to OpenStreetMap';
       
       // Restore local tile max zoom settings
-      const maxNativeZoom = 13;
+      const maxNativeZoom = 14;
       const displayMaxZoom = Math.min(maxNativeZoom + 3, 18);
       this.map.setMaxZoom(displayMaxZoom);
     }

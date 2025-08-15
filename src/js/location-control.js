@@ -19,11 +19,11 @@ class LocationControl {
         link.href = '#';
         link.title = 'Locate me';
         link.setAttribute('aria-label', 'Locate me');
-        link.style.width = '35px';
-        link.style.height = '35px';
-        link.style.lineHeight = '35px';
+        link.style.width = '40px';
+        link.style.height = '40px';
+        link.style.lineHeight = '40px';
         link.style.textAlign = 'center';
-        link.style.fontSize = '18px';
+        link.style.fontSize = '20px';
         link.textContent = '📍';
 
         L.DomEvent.on(link, 'click', L.DomEvent.stop)

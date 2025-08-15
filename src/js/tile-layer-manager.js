@@ -22,7 +22,7 @@ class TileLayerManager {
     const avail = Array.isArray(manifest.availableZooms) && manifest.availableZooms.length ? 
                   manifest.availableZooms : null;
     const minNativeZoom = avail ? Math.min(...avail) : 0;
-    const maxNativeZoom = avail ? Math.max(...avail) : 13; // your highest tile zoom
+    const maxNativeZoom = avail ? Math.max(...avail) : 14; // your highest tile zoom
     
     // Allow zooming beyond native zoom level but limit excessive zooming
     const displayMaxZoom = Math.min(maxNativeZoom + 3, 18); // Allow max 3 levels of overzooming
@@ -32,6 +32,9 @@ class TileLayerManager {
 
     if (manifest.bounds) {
       this.map.fitBounds(L.latLngBounds(manifest.bounds[0], manifest.bounds[1]));
+    } else {
+      // Fallback if no bounds in manifest
+      this.map.setView([-41.5, 174.0], 8);
     }
 
     // Create custom tile layer
@@ -51,10 +54,13 @@ class TileLayerManager {
 
   setupFallbackTileLayer() {
     // Fallback: Configure proper overzooming behavior
-    const maxNativeZoom = 13;
+    const maxNativeZoom = 14;
     const displayMaxZoom = Math.min(maxNativeZoom + 3, 18); // Allow max 3 levels of overzooming
     
     this.map.setMaxZoom(displayMaxZoom);
+    
+    // Set initial view for New Zealand (fallback center and zoom)
+    this.map.setView([-41.5, 174.0], 8);
     
     const layer = L.tileLayer('assets/tiles/{z}/{x}/{y}.png', {
       tileSize: 256,
