@@ -1,10 +1,11 @@
-const express = require('express');
-const path = require('path');
-const app = express();
+import express, { Express, Request, Response, NextFunction } from 'express';
+import path from 'path';
+
+const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
 // Security middleware
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -13,20 +14,20 @@ app.use((req, res, next) => {
 
 // Serve static files with proper caching
 app.use(express.static('.', {
-  setHeaders: (res, path) => {
+  setHeaders: (res: Response, filePath: string) => {
     // Cache tiles for 1 month
-    if (path.includes('/assets/tiles/')) {
+    if (filePath.includes('/assets/tiles/')) {
       res.setHeader('Cache-Control', 'public, max-age=2592000'); // 30 days
     }
     // Cache other static assets for 1 week
-    else if (path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
+    else if (filePath.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
       res.setHeader('Cache-Control', 'public, max-age=604800'); // 7 days
     }
   }
 }));
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ 
     status: 'healthy', 
     timestamp: new Date().toISOString(),
@@ -35,12 +36,12 @@ app.get('/health', (req, res) => {
 });
 
 // Handle SPA routing - serve index.html for all routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error('Error:', err);
   res.status(500).json({ error: 'Internal Server Error' });
 });
@@ -52,18 +53,13 @@ const server = app.listen(PORT, () => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
+const gracefulShutdown = () => {
+  console.log('Shutdown signal received, shutting down gracefully');
   server.close(() => {
     console.log('Server closed');
     process.exit(0);
   });
-});
+};
 
-process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
-  });
-});
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);

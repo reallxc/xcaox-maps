@@ -1,6 +1,6 @@
 # 🗺️ XCAOX Maps
 
-An interactive mapping platform built with Leaflet.js, featuring Points of Interest (POI) management, custom tile layers, and seamless layer switching between local tiles and OpenStreetMap.
+An interactive mapping platform built with TypeScript and Leaflet.js, featuring Points of Interest (POI) management, custom tile layers, and seamless layer switching between local tiles and OpenStreetMap.
 
 ## ✨ Features
 
@@ -11,6 +11,7 @@ An interactive mapping platform built with Leaflet.js, featuring Points of Inter
 - 🔄 **Smooth Layer Switching**: Preserve view position when switching map layers
 - ⚡ **High Performance**: Optimized tile loading with fallback handling
 - 🎨 **Custom Styling**: Consistent UI design with custom controls
+- 💪 **TypeScript**: Full type safety and better development experience
 
 ## 🚀 Quick Start
 
@@ -22,9 +23,23 @@ npm run dev
 
 ### Production
 ```bash
-npm install --production
+npm install
+npm run build
 npm start
 ```
+
+## 📦 Build Process
+
+The project uses TypeScript and requires compilation before running:
+
+- **Client-side**: TypeScript modules are bundled into a single JavaScript file using esbuild
+- **Server-side**: TypeScript server code is compiled to Node.js-compatible JavaScript
+
+### Build Commands
+- `npm run build` - Build both client and server
+- `npm run build:client` - Build only client-side code
+- `npm run build:server` - Build only server-side code
+- `npm run build:client:watch` - Watch and rebuild client code on changes
 
 ## 📦 Deployment
 
@@ -49,7 +64,8 @@ npm start
    cd /var/www
    git clone <your-repo> xcaox-maps
    cd xcaox-maps
-   npm install --production
+   npm install
+   npm run build
    ```
 
 3. **Start with PM2:**
@@ -63,8 +79,13 @@ npm start
 
 ## 🛠️ Available Scripts
 
-- `npm start` - Start production server
-- `npm run dev` - Start development server  
+- `npm run build` - Build TypeScript code for production
+- `npm run build:client` - Build client-side TypeScript
+- `npm run build:server` - Build server-side TypeScript  
+- `npm start` - Start production server (requires build first)
+- `npm run start:ts` - Start server directly from TypeScript (development)
+- `npm run dev` - Start development server with auto-rebuild
+- `npm run dev:client` - Start live-server for client development
 - `npm run pm2:start` - Start with PM2 (production)
 - `npm run pm2:stop` - Stop PM2 process
 - `npm run pm2:restart` - Restart PM2 process
@@ -76,16 +97,30 @@ npm start
 ```
 xcaox-maps/
 ├── index.html              # Main HTML file
-├── server.js              # Production Express server
-├── ecosystem.config.js    # PM2 configuration
 ├── package.json           # Dependencies and scripts
+├── tsconfig.json          # TypeScript configuration
+├── tsconfig.server.json   # Server-specific TypeScript config
+├── ecosystem.config.js    # PM2 configuration
+├── dist/                  # Compiled JavaScript (build output)
+│   ├── server.js         # Compiled Express server
+│   └── js/
+│       └── app.js        # Bundled client application
 ├── assets/               # Static assets
 │   ├── icons/           # Marker icons
 │   └── tiles/           # Custom map tiles
-└── src/                 # Source code
+└── src/                 # TypeScript source code
+    ├── server.ts        # Express server (TypeScript)
     ├── css/            # Stylesheets
-    ├── js/             # JavaScript modules
-    └── data/           # POI data files
+    ├── data/           # POI data files
+    ├── js/             # Legacy JavaScript (to be removed)
+    └── ts/             # TypeScript modules
+        ├── app.ts              # Main application
+        ├── types.ts            # Type definitions
+        ├── data-service.ts     # Data fetching service
+        ├── poi-manager.ts      # POI management
+        ├── location-control.ts # Geolocation control
+        ├── tile-layer-manager.ts # Tile layer management
+        └── map-utils.ts        # Utility functions
 ```
 
 ## 🔧 Configuration
@@ -121,8 +156,10 @@ This project is licensed under the MIT License - see LICENSE file for details
 
 ## 🎯 Built With
 
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
 - [Leaflet.js](https://leafletjs.com/) - Interactive maps
 - [Express.js](https://expressjs.com/) - Web framework
+- [esbuild](https://esbuild.github.io/) - Fast JavaScript bundler
 - [PM2](https://pm2.keymetrics.io/) - Process manager
 - Custom tile system for high-performance mapping
 

@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'xcaox-maps',
-    script: 'server.js',
+    script: 'dist/server.js',
     instances: 1,
     autorestart: true,
     watch: false,
@@ -40,7 +40,7 @@ module.exports = {
       ref: 'origin/main',
       repo: 'https://github.com/yourusername/xcaox-maps.git',
       path: '/var/www/xcaox-maps',
-      'post-deploy': 'npm install --production && pm2 reload ecosystem.config.js --env production',
+      'post-deploy': 'npm install --production && npm run build && pm2 reload ecosystem.config.js --env production',
       'pre-setup': 'apt update && apt install nodejs npm -y'
     }
   }

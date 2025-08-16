@@ -1,13 +1,17 @@
-class DataService {
-  constructor(basePath = 'src') {
+import { POI, Path, Area } from './types.js';
+
+export class DataService {
+  private basePath: string;
+
+  constructor(basePath: string = 'src') {
     this.basePath = basePath;
   }
 
-  async fetchPOIs() {
+  async fetchPOIs(): Promise<POI[]> {
     try {
       const response = await fetch(`${this.basePath}/data/pois.json`);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Failed to fetch POIs: ${response.status} ${response.statusText}`);
       }
       return await response.json();
     } catch (error) {
@@ -16,11 +20,11 @@ class DataService {
     }
   }
 
-  async fetchPaths() {
+  async fetchPaths(): Promise<Path[]> {
     try {
       const response = await fetch(`${this.basePath}/data/paths.json`);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Failed to fetch paths: ${response.status} ${response.statusText}`);
       }
       return await response.json();
     } catch (error) {
@@ -29,11 +33,11 @@ class DataService {
     }
   }
 
-  async fetchAreas() {
+  async fetchAreas(): Promise<Area[]> {
     try {
       const response = await fetch(`${this.basePath}/data/areas.json`);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Failed to fetch areas: ${response.status} ${response.statusText}`);
       }
       return await response.json();
     } catch (error) {
@@ -42,6 +46,3 @@ class DataService {
     }
   }
 }
-
-// Remove ES6 export and make it globally available
-window.DataService = DataService;
