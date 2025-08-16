@@ -106,8 +106,10 @@ if [ "$FRESH_DEPLOY" = true ]; then
     log "Starting new PM2 application..."
     pm2 start ecosystem.config.js --env production
 else
-    log "Reloading PM2 application..."
-    pm2 reload "$APP_NAME" --env production
+    log "Restarting PM2 application..."
+    # Stop the current app and start with new config
+    pm2 stop "$APP_NAME" || true
+    pm2 start ecosystem.config.js --env production
 fi
 
 # Step 9: Verify deployment
