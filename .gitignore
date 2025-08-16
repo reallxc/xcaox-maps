@@ -1,4 +1,13 @@
-assets/tiles
+assets/tiles/6
+assets/tiles/7
+assets/tiles/8
+assets/tiles/9
+assets/tiles/10
+assets/tiles/11
+assets/tiles/12
+assets/tiles/13
+assets/tiles/14
+assets/tiles/15
 node_modules
 dist/
 *.log
