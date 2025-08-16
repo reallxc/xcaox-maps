@@ -1,12 +1,64 @@
-# 🚀 XCAOX Maps - Ubuntu Server Deployment Guide
+# 🚀 XCAOX Maps - Production Deployment Guide
 
-This guide walks you through deploying XCAOX Maps to an Ubuntu 20.04+ server.
+This guide covers both initial deployment and upgrading to the TypeScript version on Ubuntu 20.04+ servers.
 
 ## 📋 Prerequisites
 
 - Ubuntu 20.04+ server with sudo privileges
 - Domain name pointing to your server (optional but recommended)
 - At least 1GB RAM and 10GB disk space
+- Node.js 16+ for TypeScript compilation
+
+## 🔄 TypeScript Upgrade Process (For Existing Deployments)
+
+If you have an existing JavaScript version running and want to upgrade to TypeScript:
+
+### Quick Upgrade (Automated)
+```bash
+# On your production server
+cd /var/www/xcaox-maps
+./scripts/deploy.sh
+```
+
+### Manual Upgrade Process
+```bash
+# 1. Create backup
+sudo mkdir -p /var/backups/xcaox-maps/$(date +%Y%m%d_%H%M%S)
+sudo cp -r /var/www/xcaox-maps /var/backups/xcaox-maps/$(date +%Y%m%d_%H%M%S)/
+
+# 2. Update source code
+cd /var/www/xcaox-maps
+git fetch origin
+git reset --hard origin/main
+
+# 3. Install dependencies (including TypeScript)
+npm ci
+npm install typescript @types/express @types/leaflet @types/node ts-node esbuild --save-dev
+
+# 4. Build TypeScript
+npm run build
+
+# 5. Reload PM2 (zero downtime)
+pm2 reload xcaox-maps --env production
+
+# 6. Verify deployment
+curl http://localhost:3000/health
+pm2 logs xcaox-maps --lines 20
+```
+
+### Rollback Process (if needed)
+```bash
+# Stop current version
+pm2 stop xcaox-maps
+
+# Restore from backup
+LATEST_BACKUP=$(ls -t /var/backups/xcaox-maps/ | head -1)
+sudo cp -r /var/backups/xcaox-maps/$LATEST_BACKUP/xcaox-maps/* /var/www/xcaox-maps/
+
+# Start original version
+cd /var/www/xcaox-maps
+pm2 start server.js --name xcaox-maps  # Original JS version
+```
 
 ## 🛠️ Server Setup
 
